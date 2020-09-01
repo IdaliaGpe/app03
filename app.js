@@ -1,4 +1,4 @@
-const char={
+/*const char={
     image:document.getElementById('char-image'),
     name:document.getElementById('char-name'),
     status:document.getElementById('char-status'),
@@ -54,5 +54,39 @@ const GetChris=async _=>{
     chris.origin1.innerHTML= `origin: ${origin[0].name}`;
     chris.created1.innerHTML= `created: ${created}`;
 }
-GetChris();
+GetChris();*/
 
+//Indicar URL API
+const baseUrl = 'https://rickandmortyapi.com/api/';
+const characterList = document.getElementById('characters-list');
+
+const GetCharactersList = async url =>{
+    /*fetch(`${baseUrl}${url}`)
+    .then(res => console.log(res.json()));*/
+
+    const reponse = await fetch(`${baseUrl}${url}`);
+    const data = await reponse.json();
+    const {results} = data;
+
+    const infoArr = results.map(element => {
+        //console.log(element);
+        const {image, url} = element;
+        return {characterImg: image, characterUrl: url};
+        //console.log(image);
+    });
+
+    await infoArr.forEach(element => {
+        const imgElement = document.createElement('img');
+        imgElement.src = element.characterImg;
+        imgElement.onclick = ()=> {
+            localStorage.setItem('characterUrl', element.characterUrl);
+            window.location.href = 'file:///D:/almacenamiento-de-mis-cosas/escuela/universidad/semestre3/hipermedia/app03/characters.htm';
+        };
+        characterList.appendChild(imgElement);
+    });
+
+    //console.log(await imgArr);
+    //console.log(await data.results);
+}
+
+GetCharactersList('character');
